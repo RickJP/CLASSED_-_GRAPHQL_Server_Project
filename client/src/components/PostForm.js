@@ -27,6 +27,9 @@ function PostForm() {
       });
       values.body = '';
     },
+    onError(err) {
+      console.log(err);
+    },
   });
 
   function createPostCallBack() {
@@ -34,20 +37,32 @@ function PostForm() {
   }
 
   return (
-    <Form onSubmit={onSubmit}>
-      <h2>Create a post:</h2>
-      <Form.Field>
-        <Form.Input
-          placeholder='Hi world'
-          name='body'
-          onChange={onChange}
-          value={values.body}
-        />
-        <Button type='submit' color='teal'>
-          Push
-        </Button>
-      </Form.Field>
-    </Form>
+    <>
+      <Form onSubmit={onSubmit}>
+        <h2>Create a post:</h2>
+        <Form.Field>
+          <Form.Input
+            placeholder='Hi world'
+            name='body'
+            onChange={onChange}
+            value={values.body}
+            error={error ? true : false}
+          />
+          <Button type='submit' color='teal'>
+            Push
+          </Button>
+        </Form.Field>
+      </Form>
+      {error && (
+        <div className='ui error message' style={{ marginBottom: 15 }}>
+          <ul className='list'>
+            <li>
+              <p>{error.graphQLErrors[0].message}</p>
+            </li>
+          </ul>
+        </div>
+      )}
+    </>
   );
 }
 
