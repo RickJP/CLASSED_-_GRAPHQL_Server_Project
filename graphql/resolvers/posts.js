@@ -1,4 +1,4 @@
-const {AuthenticationError, UserInputError} = require('apollo-server');
+const { AuthenticationError, UserInputError } = require('apollo-server');
 
 const Post = require('../../models/Post');
 const checkAuth = require('../../util/check-auth');
@@ -6,14 +6,16 @@ const checkAuth = require('../../util/check-auth');
 module.exports = {
   Query: {
     async getPosts() {
+      console.log('getPosts');
       try {
-        const posts = await Post.find().sort({createdAt: -1});
+        const posts = await Post.find().sort({ createdAt: -1 });
         return posts;
       } catch (err) {
         throw new Error(err);
       }
     },
-    async getPost(_, {postId}) {
+    async getPost(_, { postId }) {
+      console.log('getPost');
       try {
         const post = await Post.findById(postId);
         if (post) {
@@ -27,7 +29,7 @@ module.exports = {
     },
   },
   Mutation: {
-    async createPost(_, {body}, context) {
+    async createPost(_, { body }, context) {
       const user = checkAuth(context);
 
       if (body.trim() === '') {
@@ -48,7 +50,7 @@ module.exports = {
 
       return post;
     },
-    async deletePost(_, {postId}, context) {
+    async deletePost(_, { postId }, context) {
       const user = checkAuth(context);
 
       try {
@@ -63,8 +65,8 @@ module.exports = {
         throw new Error(err);
       }
     },
-    async likePost(_, {postId}, context) {
-      const {username} = checkAuth(context);
+    async likePost(_, { postId }, context) {
+      const { username } = checkAuth(context);
 
       const post = await Post.findById(postId);
 
@@ -87,7 +89,7 @@ module.exports = {
   },
   Subscription: {
     newPost: {
-      subscribe: (_, __, {pubsub}) => pubsub.asyncIterator('NEW_POST'),
+      subscribe: (_, __, { pubsub }) => pubsub.asyncIterator('NEW_POST'),
     },
   },
 };
