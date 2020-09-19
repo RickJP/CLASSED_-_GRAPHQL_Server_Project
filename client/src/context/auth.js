@@ -3,7 +3,7 @@ import jwtDecode from 'jwt-decode';
 
 const initialState = {
   user: null,
-  expiryInHours: 5,
+  expiryInHours: 1,
 };
 
 if (localStorage.getItem('jwtToken')) {
@@ -15,7 +15,7 @@ if (localStorage.getItem('jwtToken')) {
     initialState.user = decodedToken;
   }
 
-  console.log(((decodedToken.exp * 1000 - Date.now()) / 1000).toString());
+  console.log(((decodedToken.exp * 100 - Date.now()) / 1000).toString());
 }
 
 const AuthContext = createContext({
