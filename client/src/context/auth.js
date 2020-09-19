@@ -3,16 +3,19 @@ import jwtDecode from 'jwt-decode';
 
 const initialState = {
   user: null,
+  expiryInHours: 5,
 };
 
 if (localStorage.getItem('jwtToken')) {
   const decodedToken = jwtDecode(localStorage.getItem('jwtToken'));
 
-  if (decodedToken.exp * 1000 < Date.now()) {
+  if (decodedToken.exp * 1000 * initialState.expiryInHours < Date.now()) {
     localStorage.removeItem('jwtToken');
   } else {
     initialState.user = decodedToken;
   }
+
+  console.log(((decodedToken.exp * 1000 - Date.now()) / 1000).toString());
 }
 
 const AuthContext = createContext({

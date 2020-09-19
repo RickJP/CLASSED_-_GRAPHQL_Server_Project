@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 // import gql from 'graphql-tag';
 import { Grid, Transition } from 'semantic-ui-react';
@@ -15,20 +15,19 @@ function Home() {
 
   return (
     <Grid columns={3}>
-      <Grid.Row centered>
-        <h1>Recent Posts</h1>
-      </Grid.Row>
+      <Grid.Row centered>{user && <h1>Recent Posts</h1>}</Grid.Row>
       <Grid.Row>
         {user && (
           <Grid.Column>
             <PostForm />
           </Grid.Column>
         )}
-        {loading ? (
+        {user && loading ? (
           <h1>Loading posts...</h1>
         ) : (
           <Transition.Group>
-            {posts &&
+            {user &&
+              posts &&
               posts.map((post) => (
                 <Grid.Column key={post.id} style={{ marginBottom: 20 }}>
                   <PostCard post={post} />
